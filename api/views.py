@@ -6,9 +6,9 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.authtoken.models import Token
 
-from api.models import Article
+from api.models import Article, Author
 from api.serializers import LoginSerializer, SignupSerializer, ArticleSerializer, LoggedUserArticleSerializer, \
-    AnonymousArticleSerializer
+    AnonymousArticleSerializer, AuthorSerializer, AdminArticleSerializer, AdminAuthorSerializer
 
 
 class LoginAuthToken(APIView):
@@ -88,4 +88,22 @@ class ArticleView(APIView):
     def get_default(self, request):
         articles = Article.objects.all()
         serializer = ArticleSerializer(instance=articles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AdminAuthorsView(APIView):
+    permission_classes = (permissions.IsAdminUser,)
+
+    def get(self, request):
+        authors = Author.objects.all()
+        serializer = AdminAuthorSerializer(instance=authors, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AdminArticlesView(APIView):
+    permission_classes = (permissions.IsAdminUser,)
+
+    def get(self, request):
+        articles = Article.objects.all()
+        serializer = AdminArticleSerializer(instance=articles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
