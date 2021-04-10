@@ -8,7 +8,7 @@ from rest_framework.authtoken.models import Token
 
 from api.models import Article, Author
 from api.serializers import LoginSerializer, SignupSerializer, ArticleSerializer, LoggedUserArticleSerializer, \
-    AnonymousArticleSerializer, AuthorSerializer, AdminArticleSerializer, AdminAuthorSerializer
+    AnonymousArticleSerializer, AdminArticleSerializer, AdminAuthorSerializer
 
 
 class LoginAuthToken(APIView):
