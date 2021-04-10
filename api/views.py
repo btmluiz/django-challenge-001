@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.authtoken.models import Token
 
-from api.serializers import LoginSerializer
+from api.serializers import LoginSerializer, SignupSerializer
 
 
 class LoginAuthToken(APIView):
@@ -24,5 +24,25 @@ class LoginAuthToken(APIView):
             login(request, user)
 
             return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
+
+class SignupAuthToken(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        serializer = SignupSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            token, created = Token.objects.get_or_create(user=user)
+            data = {
+                'id': user.pk,
+                'token': token.key
+            }
+
+            login(request, user)
+
+            return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)

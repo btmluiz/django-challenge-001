@@ -1,1 +1,1 @@
-from django.urls import pathfrom api import viewsurlpatterns = [    path('login/', views.LoginAuthToken.as_view())]
+from django.urls import pathfrom api import viewsurlpatterns = [    path('login/', views.LoginAuthToken.as_view()),    path('sing-up/', views.SignupAuthToken.as_view())]
