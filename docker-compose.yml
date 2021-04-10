@@ -1,9 +1,34 @@
 version: '3.0'
+
 services:
   db:
     image: postgres:12
+    volumes:
+    - ./cache/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: "challenge"
       POSTGRES_DB: "challenge"
+  migration-dev:
+    build: ./
+    command: bash -c "python manage.py makemigrations && python manage.py migrate"
+    volumes:
+    - "./:/code"
+    links:
+      - db
+  dev:
+    build: ./
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+    - "./:/code"
+    links:
+      - db
+    ports:
+    - "8000:8000"
+    depends_on:
+      - db
+      - migration-dev
+
+volumes:
+  db: {}
