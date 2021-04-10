@@ -30,6 +30,9 @@ class LoginAuthToken(APIView):
         else:
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
+    def get_view_description(self, html=False):
+        return "This endpoint is used to login in the system."
+
 
 class SignupAuthToken(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -49,6 +52,9 @@ class SignupAuthToken(APIView):
             return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
+    def get_view_description(self, html=False):
+        return "This endpoint is used to create a new account in the system."
 
 
 class ArticleView(APIView):
@@ -90,6 +96,9 @@ class ArticleView(APIView):
         serializer = ArticleSerializer(instance=articles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def get_view_description(self, html=False):
+        return "This endpoint list the articles."
+
 
 class AdminAuthorsView(APIView):
     permission_classes = (permissions.IsAdminUser,)
@@ -99,6 +108,9 @@ class AdminAuthorsView(APIView):
         serializer = AdminAuthorSerializer(instance=authors, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def get_view_description(self, html=False):
+        return "This endpoint is used to list all the authors in the system (admin only)."
+
 
 class AdminArticlesView(APIView):
     permission_classes = (permissions.IsAdminUser,)
@@ -107,3 +119,6 @@ class AdminArticlesView(APIView):
         articles = Article.objects.all()
         serializer = AdminArticleSerializer(instance=articles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_view_description(self, html=False):
+        return "This endpoint is used to list all articles (admin only)."
