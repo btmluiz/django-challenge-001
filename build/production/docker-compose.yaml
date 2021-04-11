@@ -1,0 +1,52 @@
+version: '3.0'
+
+services:
+  db:
+    container_name: db_prod
+    image: postgres:12
+    env_file:
+      - ../development/.env
+    volumes:
+    - ../../cache/db_prod:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "challenge"
+      POSTGRES_DB: "challenge"
+  migration:
+    container_name: migration_prod
+    build: ./django
+    env_file:
+      - .env
+    command: bash -c "python manage.py makemigrations && python manage.py migrate"
+    volumes:
+    - "../../:/code"
+    links:
+      - db
+    depends_on:
+      - db
+  web:
+    container_name: web_prod
+    build: ./django
+    env_file:
+      - .env
+    command: gunicorn django_challenge.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+    - "../../:/code"
+    links:
+      - db
+    expose:
+    - 8000
+    depends_on:
+      - db
+      - migration
+  proxy:
+    container_name: proxy_prod
+    build: ./nginx
+    ports:
+    - 8080:80
+    depends_on:
+      - web
+
+volumes:
+  db_prod: {}

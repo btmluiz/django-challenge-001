@@ -77,3 +77,28 @@
       "body": "<div><p>Second paragraph</p><p>Third paragraph</p></div>"
     }
     ```
+
+## Instructions - Development
+
+1. First clone the repository using:
+```git clone https://github.com/btmluiz/django-challenge-001```
+2. Create your virtual environment.
+3. Install the requirements: ```pip install -r build/development/django/requirements.txt```
+4. Run docker-compose: ```docker-compose -f "build/development/docker-compose.yml" up -d```
+5. The application will be served in [http://localhost:8000/api/](http://localhost:8000/api)
+
+You can use Postman to send the requests to application using the postman collection 
+````Django-Challenger.postman_collection.json```` and postman environment ```Django-challenger.postman_environment.json```
+attached in root project directory (just remember to change the port in postman environment to 8000 if in development or
+to 8080 if in production)
+
+## Instructions - Production
+1. First clone the repository using:
+```git clone https://github.com/btmluiz/django-challenge-001```
+2. Run docker-compose: ```docker-compose -f "build/production/docker-compose.yml" up -d```
+3. The application will be served in [http://localhost:8080/api/](http://localhost:8000/api)
+
+You can use Postman to send the requests to application using the postman collection 
+````Django-Challenger.postman_collection.json```` and postman environment ```Django-challenger.postman_environment.json```
+attached in root project directory (just remember to change the port in postman environment to 8000 if in development or
+to 8080 if in production)

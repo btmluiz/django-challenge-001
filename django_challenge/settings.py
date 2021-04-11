@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'django_challenge.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('POSTGRES_HOST', default='db'),
+        'HOST': os.environ.get('DJANGO_DATABASE_HOST', default='db'),
         'NAME': os.environ.get('POSTGRES_DB', default='postgres'),
         'USER': os.environ.get('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', default='postgres')
