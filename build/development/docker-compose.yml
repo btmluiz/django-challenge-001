@@ -2,33 +2,44 @@ version: '3.0'
 
 services:
   db:
+    container_name: db_dev
     image: postgres:12
+    env_file:
+      - .env
     volumes:
-    - ./cache/db:/var/lib/postgresql/data
+    - ../../cache/db_dev:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: "challenge"
       POSTGRES_DB: "challenge"
-  migration-dev:
-    build: ./
+  migration:
+    container_name: migration_dev
+    build: ./django
+    env_file:
+      - .env
     command: bash -c "python manage.py makemigrations && python manage.py migrate"
     volumes:
-    - "./:/code"
+    - "../../:/code"
     links:
       - db
-  dev:
-    build: ./
+    depends_on:
+      - db
+  web:
+    container_name: web_dev
+    build: ./django
+    env_file:
+      - .env
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-    - "./:/code"
+    - "../../:/code"
     links:
       - db
     ports:
     - "8000:8000"
     depends_on:
       - db
-      - migration-dev
+      - migration
 
 volumes:
-  db: {}
+  db_dev: {}
